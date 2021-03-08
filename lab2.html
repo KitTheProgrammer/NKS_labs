@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div id="main"></div>
+    <div>Ви можете побачити більше виводу у консолі браузера (F12 у google chrome)</div>
+</body>
+<script>
+    String.prototype.replaceAt = function(index, replacement) {
+      return this.substr(0, index) + replacement + this.substr(index + replacement.length)
+    }
+
+    const main = document.getElementById('main')
+    const linkTable = {
+      0: [ 1, 2 ],
+      1: [ 3, 4 ],
+      2: [ 3, 5 ],
+      3: [ 4, 5 ],
+      4: [ 6, 7 ],
+      5: [ 6, 8 ],
+      6: [ 7, 8 ],
+      7: [ 9 ],
+      8: [ 9 ],
+      9: []
+    }
+    const weightTable = [ 0.59, 0.34, 0.15, 0.14, 0.36, 0.57, 0.89, 0.93 ]
+    // const linkTable = {
+    //   0: [ 1 ],
+    //   1: [ 2, 3 ],
+    //   2: [ 4, 5 ],
+    //   3: [ 4, 8 ],
+    //   4: [ 5, 8 ],
+    //   5: [ 6, 7 ],
+    //   6: [ 7, 8 ],
+    //   7: [ 9 ],
+    //   8: [ 9 ],
+    //   9: []
+    // }
+    // const weightTable = [ 0.5, 0.6, 0.7, 0.8, 0.85, 0.90, 0.92, 0.94 ]
+
+    let possiblePasses = [ ]
+
+    const finder = (s, visited) => {
+      visited.push(s)
+
+      if (linkTable[s].length === 0) {
+        console.log(visited)
+        possiblePasses.push([ ...visited ])
+        visited.pop()
+        return
+      }
+
+      for (let n of linkTable[s]) {
+        finder(n, visited)
+
+      }
+      visited.pop()
+    }
+
+    finder(0, [])
+
+    possiblePasses = possiblePasses.map((it) => {
+      it.shift()
+      it.pop()
+      return it
+    })
+
+    console.log(possiblePasses)
+
+    let variants = []
+    for (let i = 0; i < 256; i++) {
+      const str = parseInt(i).toString(2)
+      const addZeros = (str.length === 8) ? '' : '0'.repeat(8 - str.length)
+      variants.push(addZeros + str)
+    }
+
+    variants = variants.filter((variant) => {
+      let variantIsOk = false
+      for (let path of possiblePasses) {
+        let itsOk = true
+        for (let nodeId of path) {
+          if (parseInt(variant[nodeId - 1], 10) === 0) {
+            itsOk = false
+            break
+          }
+        }
+        if (itsOk) {
+          variantIsOk = true
+          break
+        }
+      }
+      return variantIsOk
+    })
+
+    console.log(variants)
+
+    const pState = variants.map((it) => {
+      return it.split('').map((ch, index) => (parseInt(ch) === 1) ? weightTable[index] : 1 - weightTable[index])
+    })
+
+    console.log(pState)
+
+    const pSystem = pState.reduce((a1, it1) => {
+      console.log(it1.reduce((a2, it2) => a2 * it2, 1))
+      return a1 + it1.reduce((a2, it2) => a2 * it2, 1)
+    }, 0)
+
+    console.log(pSystem)
+    main.insertAdjacentHTML('afterbegin', `<h1>Відповідь: ${pSystem}</h1>`)
+</script>
+</html>
