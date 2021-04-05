@@ -14,32 +14,32 @@
     }
 
     const main = document.getElementById('main')
-    const linkTable = {
-      0: [ 1, 2 ],
-      1: [ 3, 4 ],
-      2: [ 3, 5 ],
-      3: [ 4, 5 ],
-      4: [ 6, 7 ],
-      5: [ 6, 8 ],
-      6: [ 7, 8 ],
-      7: [ 9 ],
-      8: [ 9 ],
-      9: []
-    }
-    const weightTable = [ 0.59, 0.34, 0.15, 0.14, 0.36, 0.57, 0.89, 0.93 ]
     // const linkTable = {
-    //   0: [ 1 ],
-    //   1: [ 2, 3 ],
-    //   2: [ 4, 5 ],
-    //   3: [ 4, 8 ],
-    //   4: [ 5, 8 ],
-    //   5: [ 6, 7 ],
+    //   0: [ 1, 2 ],
+    //   1: [ 3, 4 ],
+    //   2: [ 3, 5 ],
+    //   3: [ 4, 5 ],
+    //   4: [ 6, 7 ],
+    //   5: [ 6, 8 ],
     //   6: [ 7, 8 ],
     //   7: [ 9 ],
     //   8: [ 9 ],
     //   9: []
     // }
-    // const weightTable = [ 0.5, 0.6, 0.7, 0.8, 0.85, 0.90, 0.92, 0.94 ]
+    // const weightTable = [ 0.59, 0.34, 0.15, 0.14, 0.36, 0.57, 0.89, 0.93 ]
+    const linkTable = {
+      0: [ 1 ],
+      1: [ 2, 3 ],
+      2: [ 4, 5 ],
+      3: [ 4, 8 ],
+      4: [ 5, 8 ],
+      5: [ 6, 7 ],
+      6: [ 7, 8 ],
+      7: [ 9 ],
+      8: [ 9 ],
+      9: []
+    }
+    const weightTable = [ 0.5, 0.6, 0.7, 0.8, 0.85, 0.90, 0.92, 0.94 ]
 
     let possiblePasses = [ ]
 
@@ -109,6 +109,22 @@
     }, 0)
 
     console.log(pSystem)
-    main.insertAdjacentHTML('afterbegin', `<h1>Відповідь: ${pSystem}</h1>`)
+    main.insertAdjacentHTML('beforeend', `<h1>Psystem: ${pSystem}</h1>`)
+    const qSystem = 1 - pSystem
+    main.insertAdjacentHTML('beforeend', `<h1>Qsystem: ${qSystem}</h1>`)
+    const tSystem = -1421/Math.log10(pSystem)
+    main.insertAdjacentHTML('beforeend', `<h1>Tsystem: ${tSystem}</h1>`)
+    const qRSystem = qSystem/6
+    main.insertAdjacentHTML('beforeend', `<h1>Q res system: ${qRSystem}</h1>`)
+    const pRSystem = 1 - qRSystem
+    main.insertAdjacentHTML('beforeend', `<h1>P res system: ${pRSystem}</h1>`)
+    const tRSystem = -1421/Math.log10(pRSystem)
+    main.insertAdjacentHTML('beforeend', `<h1>T res system: ${tRSystem}</h1>`)
+    const GQ = qRSystem/qSystem
+    main.insertAdjacentHTML('beforeend', `<h1>Gq: ${GQ}</h1>`)
+    const GP = pRSystem/pSystem
+    main.insertAdjacentHTML('beforeend', `<h1>Gp: ${GP}</h1>`)
+    const GT = tRSystem/tSystem
+    main.insertAdjacentHTML('beforeend', `<h1>Gt: ${GT}</h1>`)
 </script>
 </html>
